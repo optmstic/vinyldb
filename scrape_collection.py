@@ -1,12 +1,13 @@
 """Fetch a Discogs collection and save it to SQLite + CSV with original
-release year, reissue/edition/color metadata, and cover art from the
-release's own Discogs primary image (the sleeve photo uploaded for that
-specific pressing).
+release year, reissue/edition/color metadata, and cover art from Deezer
+(falling back to the release's own Discogs primary image when Deezer
+has no match).
 
 Requires DISCOGS_TOKEN and DISCOGS_USERNAME in a .env file (or env vars).
 """
 
 import csv
+import difflib
 import json
 import os
 import re
@@ -199,6 +200,76 @@ def fetch_master_year(session, master_id):
     return data.get("year") or None
 
 
+def strip_parens(s):
+    return re.sub(r"\s*\([^)]*\)\s*", " ", s or "").strip()
+
+
+def norm_title(s):
+    s = (s or "").lower()
+    s = re.sub(r"\s*\([^)]*\)\s*", " ", s)
+    s = re.sub(r"\s*\[[^\]]*\]\s*", " ", s)
+    s = re.sub(r"[^\w\s]", " ", s, flags=re.UNICODE)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+def title_similarity(a, b):
+    a, b = norm_title(a), norm_title(b)
+    if not a or not b:
+        return 0.0
+    return difflib.SequenceMatcher(None, a, b).ratio()
+
+
+def pick_best_deezer(candidates, want_title, want_year):
+    best, best_score = None, 0.0
+    for c in candidates:
+        sim = title_similarity(c["title"], want_title)
+        if sim < 0.55:
+            continue
+        score = sim
+        if want_year and c.get("year"):
+            diff = abs(int(c["year"]) - int(want_year))
+            score += 0.25 if diff == 0 else (0.10 if diff <= 2 else -0.10)
+        t = (c["title"] or "").lower()
+        if any(k in t for k in ("karaoke", "tribute", "instrumental version", "remixes")):
+            score -= 0.20
+        if score > best_score:
+            best, best_score = c, score
+    return best
+
+
+def fetch_deezer_cover(http, artist, album, year):
+    """Return a Deezer cover URL for a good match, or None."""
+    url = "https://api.deezer.com/search/album"
+    artist_s = strip_parens(artist)
+    album_s = strip_parens(album)
+    queries = [
+        f'artist:"{artist_s}" album:"{album_s}"',
+        f"{artist_s} {album_s}",
+    ]
+    results = []
+    for q in queries:
+        try:
+            r = http.get(url, params={"q": q, "limit": 10}, timeout=15)
+        except requests.RequestException:
+            continue
+        if r.ok:
+            results = (r.json() or {}).get("data") or []
+            if results:
+                break
+    candidates = [
+        {
+            "title": c.get("title"),
+            "year": (c.get("release_date") or "")[:4] or None,
+            "art": c.get("cover_xl") or c.get("cover_big"),
+        }
+        for c in results
+        if c.get("cover_xl") or c.get("cover_big")
+    ]
+    best = pick_best_deezer(candidates, album, year)
+    return best["art"] if best else None
+
+
 def download_image(http, url, dest):
     try:
         r = http.get(url, timeout=30, allow_redirects=True)
@@ -221,7 +292,7 @@ def load_overrides():
         return {}
 
 
-def fetch_cover(http, release_id, discogs_images, overrides):
+def fetch_cover(http, release_id, artist, album, year, discogs_images, overrides):
     COVERS_DIR.mkdir(exist_ok=True)
     dest = COVERS_DIR / f"{release_id}.jpg"
 
@@ -233,6 +304,10 @@ def fetch_cover(http, release_id, discogs_images, overrides):
 
     if dest.exists() and dest.stat().st_size > 0 and not REFRESH_COVERS:
         return f"covers/{release_id}.jpg", "cached"
+
+    url = fetch_deezer_cover(http, artist, album, year)
+    if url and download_image(http, url, dest):
+        return f"covers/{release_id}.jpg", "deezer"
 
     url = discogs_primary_image(discogs_images)
     if url and download_image(http, url, dest):
@@ -334,7 +409,7 @@ def main():
             original_year = year
         if original_year and year and original_year < year and not reissue:
             reissue = "Reissue"
-        cover_path, cover_source = fetch_cover(http, release_id, details["images"], overrides)
+        cover_path, cover_source = fetch_cover(http, release_id, artist, album, year, details["images"], overrides)
         if cover_source and cover_source != "cached":
             print(f"     cover: {cover_source}")
 

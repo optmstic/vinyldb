@@ -1,15 +1,4 @@
 {
   "_comment": "Map Discogs release_id (as string) to an image URL to force a specific cover. The scraper downloads the URL and caches it as covers/<release_id>.jpg on every run.",
-  "_example": "32416002: https://example.com/cover.jpg",
-
-  "28951774": "https://f4.bcbits.com/img/a1414009437_10.jpg",
-  "26166029": "https://upload.wikimedia.org/wikipedia/en/5/57/Billy_Howerdel_-_What_Normal_Was.png",
-  "9257171":  "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/5f/4f/1c/5f4f1c6f-a85b-da8b-07c6-e89505d1a25f/cover.jpg/1200x1200bb.jpg",
-  "18469045": "https://f4.bcbits.com/img/a1489624978_10.jpg",
-  "31708403": "https://f4.bcbits.com/img/a2286315873_10.jpg",
-  "27236106": "https://f4.bcbits.com/img/a3145041336_10.jpg",
-  "28207081": "https://upload.wikimedia.org/wikipedia/en/e/ea/Royksopp_-_Junior_album_cover.png",
-  "14186387": "https://f4.bcbits.com/img/a3733381955_10.jpg",
-  "33833697": "https://f4.bcbits.com/img/a2575559421_10.jpg",
-  "29209435": "https://upload.wikimedia.org/wikipedia/en/6/68/Crosses_-_Goodnight%2C_God_Bless%2C_I_Love_U%2C_Delete.png"
+  "_example": "32416002: https://example.com/cover.jpg"
 }

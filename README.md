@@ -2,7 +2,7 @@
 
 A scraped, browsable snapshot of a Discogs vinyl collection.
 
-- `scrape_collection.py` — pulls the collection, detects original release year (via master release), reissue/repress status, limited/numbered editions, and coloured vinyl variants; fetches cover art from the Discogs release's own primary image — the sleeve photo uploaded for that specific pressing (with per-release override via `covers_override.json`).
+- `scrape_collection.py` — pulls the collection, detects original release year (via master release), reissue/repress status, limited/numbered editions, and coloured vinyl variants; fetches cover art from Deezer, falling back to the Discogs release's own primary image when Deezer has no match (with per-release override via `covers_override.json`).
 - `app.py` — Flask viewer for local use.
 - `build_static.py` — generates the `docs/` directory published to GitHub Pages.
 - `.github/workflows/scrape.yml` — daily rescrape and commit at 20:00 UTC.
