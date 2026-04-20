@@ -1,0 +1,44 @@
+name: scrape-and-publish
+
+on:
+  schedule:
+    - cron: "0 20 * * *"   # daily at 20:00 UTC
+  workflow_dispatch:         # manual run button
+
+permissions:
+  contents: write            # needed to push the updated site/ and covers/
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Scrape Discogs collection
+        env:
+          DISCOGS_TOKEN: ${{ secrets.DISCOGS_TOKEN }}
+          DISCOGS_USERNAME: ${{ secrets.DISCOGS_USERNAME }}
+        run: python scrape_collection.py
+
+      - name: Build static site
+        run: python build_static.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "Nuno"
+          git config user.email "pintonunom@gmail.com"
+          git add collection.db collection.csv covers/ docs/
+          if git diff --cached --quiet; then
+            echo "No changes — nothing to commit."
+          else
+            git commit -m "auto: refresh collection $(date -u +%Y-%m-%d)"
+            git push
+          fi

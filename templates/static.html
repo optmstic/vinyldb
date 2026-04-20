@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>VinylDb</title>
+<style>
+  :root {
+    --bg: #0e0e10;
+    --panel: #17171a;
+    --panel-strong: #141418;
+    --text: #eaeaea;
+    --muted: #8b8b93;
+    --border: #26262b;
+    --accent: #e6a84b;
+    --row-hover: #1d1d22;
+    --cover-bg: #000;
+    --placeholder: #333;
+    --card-w: 140px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+  }
+  header {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { margin: 0; line-height: 0; }
+  h1 svg { display: block; height: 40px; width: auto; }
+  .sub { color: var(--muted); font-size: 13px; }
+  .spacer { flex: 1; }
+  header select, header button {
+    background: #000; color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 6px 10px; font-size: 12px; font-family: inherit; cursor: pointer;
+  }
+  header button { color: var(--muted); }
+  header button:hover { color: var(--text); border-color: var(--accent); }
+  .toggle { display: inline-flex; gap: 4px; }
+  .toggle button.active { color: var(--accent); border-color: var(--accent); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .cover {
+    aspect-ratio: 1 / 1;
+    background: var(--cover-bg) center/cover no-repeat;
+    position: relative;
+  }
+  .cover.placeholder::after {
+    content: "♪";
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--placeholder); font-size: 60px;
+  }
+  .card .body { padding: 8px 10px 10px; font-size: 12px; display: flex; flex-direction: column; gap: 2px; }
+  .card .artist { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card .album { font-weight: 500; line-height: 1.25; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card .album a { color: var(--text); text-decoration: none; }
+  .card .album a:hover { color: var(--accent); }
+  .card .meta { margin-top: 4px; color: var(--muted); font-size: 10px; display: flex; flex-wrap: wrap; gap: 2px 8px; }
+  .card .extras { margin-top: 2px; color: var(--muted); font-size: 9px; line-height: 1.35; display: flex; flex-direction: column; }
+  .tag { background: var(--panel-strong); color: var(--muted); padding: 1px 6px; border-radius: 3px; font-size: 11px; }
+  .stats { margin-top: 6px; display: flex; gap: 10px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+  .stats span b { color: var(--text); font-weight: 500; }
+  .price { color: var(--accent); }
+
+  table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  th, td {
+    padding: 8px 12px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: middle;
+  }
+  th {
+    background: var(--panel-strong); font-weight: 600; color: var(--muted);
+    cursor: pointer; user-select: none; white-space: nowrap;
+    position: sticky; top: 0;
+  }
+  th:hover { color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--row-hover); }
+  td.num, td.year, td.country { color: var(--muted); white-space: nowrap; }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  td img.thumb { width: 40px; height: 40px; border-radius: 3px; object-fit: cover; display: block; }
+
+  .gen { color: var(--muted); font-size: 12px; margin-left: auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>
+    <svg viewBox="0 0 210 44" xmlns="http://www.w3.org/2000/svg" aria-label="VinylDb">
+      <g transform="translate(22,22)">
+        <circle r="20" fill="#050505" stroke="#2a2a2e" stroke-width="0.5"/>
+        <circle r="18" fill="none" stroke="#1c1c1f" stroke-width="0.5"/>
+        <circle r="15" fill="none" stroke="#1c1c1f" stroke-width="0.5"/>
+        <circle r="12" fill="none" stroke="#1c1c1f" stroke-width="0.5"/>
+        <circle r="9" fill="none" stroke="#1c1c1f" stroke-width="0.5"/>
+        <circle r="7" fill="#e6a84b"/>
+        <circle r="5" fill="none" stroke="#b1812f" stroke-width="0.4"/>
+        <circle r="1.2" fill="#0e0e10"/>
+        <path d="M -20 0 A 20 20 0 0 1 0 -20" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="0.8"/>
+      </g>
+      <text x="54" y="30" font-family="'Helvetica Neue', -apple-system, 'Segoe UI', Arial, sans-serif"
+            font-size="26" font-weight="800" fill="#eaeaea" letter-spacing="-0.5">Vinyl<tspan fill="#e6a84b">Db</tspan></text>
+    </svg>
+  </h1>
+  <span class="sub" id="sub"></span>
+  <span class="spacer"></span>
+  <select id="sort">
+    <option value="artist">Sort: Artist</option>
+    <option value="album">Sort: Album</option>
+    <option value="year">Sort: Year</option>
+    <option value="date_added">Sort: Date added</option>
+  </select>
+  <button id="dir" title="Toggle direction">▲</button>
+  <div class="toggle">
+    <button id="view-grid" class="active">Grid</button>
+    <button id="view-list">List</button>
+  </div>
+  <span class="gen" id="gen"></span>
+</header>
+
+<div id="grid" class="grid"></div>
+<table id="tbl" style="display:none">
+  <thead>
+    <tr>
+      <th></th>
+      <th data-key="artist">Artist</th>
+      <th data-key="album">Album</th>
+      <th data-key="genre">Genre</th>
+      <th data-key="original_year">Year</th>
+      <th data-key="country">Country</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script id="data" type="application/json">__EMBEDDED_DATA__</script>
+<script>
+  const DATA = JSON.parse(document.getElementById("data").textContent);
+  const RELEASES = DATA.releases;
+
+  const $ = s => document.querySelector(s);
+  const sortEl = $("#sort"), dirEl = $("#dir"),
+        gridEl = $("#grid"), tblEl = $("#tbl"), tbody = tblEl.querySelector("tbody");
+
+  let sortKey = "artist", sortDir = 1, view = "grid";
+
+  $("#sub").textContent = `${DATA.count} releases`;
+  $("#gen").textContent = DATA.generated_at ? `updated ${DATA.generated_at.slice(0,10)}` : "";
+
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+  function tags(s) {
+    if (!s) return "";
+    return s.split(",").map(t => `<span class="tag">${esc(t.trim())}</span>`).join(" ");
+  }
+  function money(r) {
+    if (r.lowest_price == null) return "";
+    const sym = {EUR:"€", USD:"$", GBP:"£"}[r.currency] || r.currency + " ";
+    return `${sym}${Number(r.lowest_price).toFixed(2)}`;
+  }
+  function rating(r) {
+    if (!r.rating_count) return "";
+    return `${Number(r.rating_avg).toFixed(2)} (${r.rating_count})`;
+  }
+
+  function filtered() {
+    const out = RELEASES.slice();
+    out.sort((a, b) => {
+      const av = a[sortKey], bv = b[sortKey];
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      if (typeof av === "number" && typeof bv === "number") return (av - bv) * sortDir;
+      return String(av).localeCompare(String(bv), undefined, { sensitivity: "base" }) * sortDir;
+    });
+    return out;
+  }
+
+  function displayYear(r) {
+    return r.original_year ?? r.year ?? "";
+  }
+  function reissueBadge(r) {
+    if (!r.reissue) return "";
+    const press = r.year && r.year !== r.original_year ? ` (${r.year})` : "";
+    return `<span class="tag">${esc(r.reissue)}${press}</span>`;
+  }
+  function badges(r) {
+    const parts = [reissueBadge(r)];
+    if (r.edition) parts.push(`<span class="tag">${esc(r.edition)}</span>`);
+    if (r.color) parts.push(`<span class="tag">${esc(r.color)}</span>`);
+    return parts.filter(Boolean).join(" ");
+  }
+  function extras(r) {
+    const lines = [];
+    if (r.reissue) {
+      const press = r.year && r.year !== r.original_year ? ` (${r.year})` : "";
+      lines.push(`${r.reissue}${press}`);
+    }
+    if (r.edition) lines.push(r.edition);
+    if (r.color) lines.push(r.color);
+    if (!lines.length) return "";
+    return `<div class="extras">${lines.map(l => `<div>${esc(l)}</div>`).join("")}</div>`;
+  }
+
+  function renderGrid(rows) {
+    gridEl.innerHTML = rows.map(r => {
+      const cover = r.cover_path
+        ? `<div class="cover" style="background-image:url('${esc(r.cover_path)}')"></div>`
+        : `<div class="cover placeholder"></div>`;
+      const y = displayYear(r);
+      return `
+        <div class="card">
+          <a href="https://www.discogs.com/release/${r.release_id}" target="_blank" rel="noopener">${cover}</a>
+          <div class="body">
+            <div class="artist">${esc(r.artist)}</div>
+            <div class="album"><a href="https://www.discogs.com/release/${r.release_id}" target="_blank" rel="noopener">${esc(r.album)}</a></div>
+            <div class="meta">
+              ${y ? `<span>${y}</span>` : ""}
+              ${r.country ? `<span>${esc(r.country)}</span>` : ""}
+            </div>
+            ${extras(r)}
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  function renderTable(rows) {
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td>${r.cover_path ? `<img class="thumb" src="${esc(r.cover_path)}" alt="">` : ""}</td>
+        <td>${esc(r.artist)}</td>
+        <td><a href="https://www.discogs.com/release/${r.release_id}" target="_blank" rel="noopener">${esc(r.album)}</a></td>
+        <td>${tags(r.genre)}</td>
+        <td class="year">${displayYear(r)}</td>
+        <td class="country">${esc(r.country ?? "")}</td>
+        <td>${badges(r)}</td>
+      </tr>
+    `).join("");
+  }
+
+  function render() {
+    const rows = filtered();
+    if (view === "grid") {
+      gridEl.style.display = ""; tblEl.style.display = "none";
+      renderGrid(rows);
+    } else {
+      gridEl.style.display = "none"; tblEl.style.display = "";
+      renderTable(rows);
+    }
+    dirEl.textContent = sortDir === 1 ? "▲" : "▼";
+  }
+
+  sortEl.addEventListener("change", () => { sortKey = sortEl.value; render(); });
+  dirEl.addEventListener("click", () => { sortDir *= -1; render(); });
+  document.querySelectorAll("#tbl th[data-key]").forEach(th => {
+    th.addEventListener("click", () => {
+      const k = th.dataset.key;
+      if (k === sortKey) sortDir *= -1;
+      else { sortKey = k; sortDir = 1; sortEl.value = k; }
+      render();
+    });
+  });
+  $("#view-grid").addEventListener("click", () => {
+    view = "grid"; $("#view-grid").classList.add("active"); $("#view-list").classList.remove("active"); render();
+  });
+  $("#view-list").addEventListener("click", () => {
+    view = "list"; $("#view-list").classList.add("active"); $("#view-grid").classList.remove("active"); render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>

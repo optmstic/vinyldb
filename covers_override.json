@@ -1,0 +1,4 @@
+{
+  "_comment": "Map Discogs release_id (as string) to an image URL to force a specific cover. The scraper downloads the URL and caches it as covers/<release_id>.jpg on every run.",
+  "_example": "32416002: https://example.com/cover.jpg"
+}
