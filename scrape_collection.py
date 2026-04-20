@@ -1,6 +1,5 @@
 """Fetch a Discogs collection and save it to SQLite + CSV with original
-release year, reissue/edition/color metadata, and cover art
-(Deezer → Discogs → Cover Art Archive).
+release year, reissue/edition/color metadata, and cover art from Deezer.
 
 Requires DISCOGS_TOKEN and DISCOGS_USERNAME in a .env file (or env vars).
 """
@@ -178,16 +177,9 @@ def iter_collection(session, username):
 
 def fetch_release_details(session, release_id):
     data = request(session, f"{API}/releases/{release_id}")
-    images = data.get("images") or []
-    primary = next((img.get("resource_url") for img in images if img.get("type") == "primary"), None)
-    any_img = next((img.get("resource_url") for img in images if img.get("resource_url")), None)
-    cover = primary or any_img or data.get("cover_image") or ""
-    if cover and "spacer" in cover.lower():
-        cover = ""
     return {
         "country": data.get("country") or "",
         "master_id": data.get("master_id") or None,
-        "discogs_cover": cover or None,
         "formats": data.get("formats") or [],
     }
 
@@ -266,23 +258,6 @@ def fetch_deezer_cover(http, artist, album, year):
     return best["art"] if best else None
 
 
-def fetch_caa_cover(http, artist, album):
-    query = f'artist:"{strip_parens(artist)}" AND releasegroup:"{strip_parens(album)}"'
-    r = http.get(
-        "https://musicbrainz.org/ws/2/release-group/",
-        params={"query": query, "fmt": "json", "limit": 1},
-        headers={"User-Agent": USER_AGENT},
-        timeout=15,
-    )
-    time.sleep(1.1)  # MusicBrainz rate limit
-    if not r.ok:
-        return None
-    groups = (r.json() or {}).get("release-groups") or []
-    if not groups or not groups[0].get("id"):
-        return None
-    return f"https://coverartarchive.org/release-group/{groups[0]['id']}/front-500"
-
-
 def download_image(http, url, dest):
     r = http.get(url, timeout=30, allow_redirects=True)
     if r.status_code != 200 or not r.content:
@@ -301,7 +276,7 @@ def load_overrides():
         return {}
 
 
-def fetch_cover(http, artist, album, release_id, year, overrides, discogs_cover):
+def fetch_cover(http, artist, album, release_id, year, overrides):
     COVERS_DIR.mkdir(exist_ok=True)
     dest = COVERS_DIR / f"{release_id}.jpg"
 
@@ -317,13 +292,6 @@ def fetch_cover(http, artist, album, release_id, year, overrides, discogs_cover)
     url = fetch_deezer_cover(http, artist, album, year)
     if url and download_image(http, url, dest):
         return f"covers/{release_id}.jpg", "deezer"
-
-    if discogs_cover and download_image(http, discogs_cover, dest):
-        return f"covers/{release_id}.jpg", "discogs"
-
-    url = fetch_caa_cover(http, artist, album)
-    if url and download_image(http, url, dest):
-        return f"covers/{release_id}.jpg", "coverartarchive"
 
     return None, None
 
@@ -407,7 +375,7 @@ def main():
             original_year = year
         if original_year and year and original_year < year and not reissue:
             reissue = "Reissue"
-        cover_path, cover_source = fetch_cover(http, artist, album, release_id, year, overrides, details.get("discogs_cover"))
+        cover_path, cover_source = fetch_cover(http, artist, album, release_id, year, overrides)
         if cover_source and cover_source != "cached":
             print(f"     cover: {cover_source}")
 
