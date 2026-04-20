@@ -1,4 +1,9 @@
 {
-  "_comment": "Map Discogs release_id (as string) to an image URL to force a specific cover. The scraper downloads the URL and caches it as covers/<release_id>.jpg on every run.",
-  "_example": "32416002: https://example.com/cover.jpg"
+  "_comment": "Map Discogs release_id (as string) to either an image URL (force that URL) or the literal string \"discogs\" (force the release's own Discogs primary image). The scraper refreshes these on every run.",
+  "_example_url": "32416002: https://example.com/cover.jpg",
+  "_example_discogs": "31128872: discogs",
+
+  "31128872": "discogs",
+  "1786820":  "discogs",
+  "23436272": "discogs"
 }

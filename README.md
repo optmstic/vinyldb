@@ -47,10 +47,13 @@ SQLite `releases` columns:
 
 ## Fixing a wrong cover
 
-Add an entry to `covers_override.json` mapping the Discogs release ID (as a string) to the correct image URL:
+Add an entry to `covers_override.json` mapping the Discogs release ID (as a string) to either a direct image URL or the literal string `"discogs"` to force that release's own Discogs primary image:
 
 ```json
-{ "32416002": "https://example.com/correct-cover.jpg" }
+{
+  "32416002": "https://example.com/correct-cover.jpg",
+  "31128872": "discogs"
+}
 ```
 
-The override is re-downloaded on every scrape and wins over the automatic chain.
+Overrides are refreshed on every scrape and win over the automatic Deezer→Discogs chain.

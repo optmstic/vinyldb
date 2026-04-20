@@ -297,7 +297,12 @@ def fetch_cover(http, release_id, artist, album, year, discogs_images, overrides
     dest = COVERS_DIR / f"{release_id}.jpg"
 
     override = overrides.get(str(release_id))
-    if override:
+    if override == "discogs":
+        url = discogs_primary_image(discogs_images)
+        if url and download_image(http, url, dest):
+            return f"covers/{release_id}.jpg", "discogs-forced"
+        print(f"  forced discogs: no primary image for {release_id}", file=sys.stderr)
+    elif override:
         if download_image(http, override, dest):
             return f"covers/{release_id}.jpg", "override"
         print(f"  override url failed for {release_id}", file=sys.stderr)
