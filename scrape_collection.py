@@ -1,11 +1,12 @@
 """Fetch a Discogs collection and save it to SQLite + CSV with original
-release year, reissue/edition/color metadata, and cover art from Deezer.
+release year, reissue/edition/color metadata, and cover art from the
+release's own Discogs primary image (the sleeve photo uploaded for that
+specific pressing).
 
 Requires DISCOGS_TOKEN and DISCOGS_USERNAME in a .env file (or env vars).
 """
 
 import csv
-import difflib
 import json
 import os
 import re
@@ -15,6 +16,8 @@ import time
 from pathlib import Path
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from dotenv import load_dotenv
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -136,10 +139,6 @@ def format_artists(artists):
     return " ".join(p for p in parts if p).strip()
 
 
-def strip_parens(s):
-    return re.sub(r"\s*\([^)]*\)\s*", " ", s or "").strip()
-
-
 def request(session, url, params=None, accept_404=False):
     while True:
         r = session.get(url, params=params, timeout=30)
@@ -181,7 +180,16 @@ def fetch_release_details(session, release_id):
         "country": data.get("country") or "",
         "master_id": data.get("master_id") or None,
         "formats": data.get("formats") or [],
+        "images": data.get("images") or [],
     }
+
+
+def discogs_primary_image(images):
+    """Return the URL of the release's primary (front) image, or None."""
+    for img in images or []:
+        if img.get("type") == "primary" and img.get("uri"):
+            return img["uri"]
+    return None
 
 
 def fetch_master_year(session, master_id):
@@ -191,75 +199,12 @@ def fetch_master_year(session, master_id):
     return data.get("year") or None
 
 
-def norm_title(s):
-    """Normalize a title for fuzzy comparison."""
-    s = (s or "").lower()
-    s = re.sub(r"\s*\([^)]*\)\s*", " ", s)
-    s = re.sub(r"\s*\[[^\]]*\]\s*", " ", s)
-    s = re.sub(r"[^\w\s]", " ", s, flags=re.UNICODE)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-
-def title_similarity(a, b):
-    a, b = norm_title(a), norm_title(b)
-    if not a or not b:
-        return 0.0
-    return difflib.SequenceMatcher(None, a, b).ratio()
-
-
-def pick_best(candidates, want_title, want_year):
-    """Score candidates; return the best (candidate, score) or (None, 0)."""
-    best, best_score = None, 0.0
-    for c in candidates:
-        title_sim = title_similarity(c["title"], want_title)
-        if title_sim < 0.55:
-            continue
-        score = title_sim
-        if want_year and c.get("year"):
-            diff = abs(int(c["year"]) - int(want_year))
-            if diff == 0:
-                score += 0.25
-            elif diff <= 2:
-                score += 0.10
-            else:
-                score -= 0.10
-        # penalise obvious non-album variants
-        t = (c["title"] or "").lower()
-        if any(k in t for k in ("karaoke", "tribute", "instrumental version", "remixes")):
-            score -= 0.20
-        if score > best_score:
-            best, best_score = c, score
-    return best, best_score
-
-
-def fetch_deezer_cover(http, artist, album, year):
-    q = f'artist:"{strip_parens(artist)}" album:"{strip_parens(album)}"'
-    url = "https://api.deezer.com/search/album"
-    r = http.get(url, params={"q": q, "limit": 10}, timeout=15)
-    results = []
-    if r.ok:
-        results = (r.json() or {}).get("data") or []
-    if not results:
-        # looser query
-        r = http.get(url, params={"q": f"{strip_parens(artist)} {strip_parens(album)}", "limit": 10}, timeout=15)
-        if r.ok:
-            results = (r.json() or {}).get("data") or []
-    candidates = [
-        {
-            "title": c.get("title"),
-            "year": (c.get("release_date") or "")[:4] or None,
-            "art": c.get("cover_xl") or c.get("cover_big"),
-        }
-        for c in results
-        if c.get("cover_xl") or c.get("cover_big")
-    ]
-    best, _ = pick_best(candidates, album, year)
-    return best["art"] if best else None
-
-
 def download_image(http, url, dest):
-    r = http.get(url, timeout=30, allow_redirects=True)
+    try:
+        r = http.get(url, timeout=30, allow_redirects=True)
+    except requests.RequestException as e:
+        print(f"  download error: {e}", file=sys.stderr)
+        return False
     if r.status_code != 200 or not r.content:
         return False
     dest.write_bytes(r.content)
@@ -276,7 +221,7 @@ def load_overrides():
         return {}
 
 
-def fetch_cover(http, artist, album, release_id, year, overrides):
+def fetch_cover(http, release_id, discogs_images, overrides):
     COVERS_DIR.mkdir(exist_ok=True)
     dest = COVERS_DIR / f"{release_id}.jpg"
 
@@ -289,9 +234,9 @@ def fetch_cover(http, artist, album, release_id, year, overrides):
     if dest.exists() and dest.stat().st_size > 0 and not REFRESH_COVERS:
         return f"covers/{release_id}.jpg", "cached"
 
-    url = fetch_deezer_cover(http, artist, album, year)
+    url = discogs_primary_image(discogs_images)
     if url and download_image(http, url, dest):
-        return f"covers/{release_id}.jpg", "deezer"
+        return f"covers/{release_id}.jpg", "discogs"
 
     return None, None
 
@@ -339,11 +284,25 @@ def main():
         print("Missing DISCOGS_TOKEN or DISCOGS_USERNAME", file=sys.stderr)
         sys.exit(1)
 
+    retry = Retry(
+        total=5,
+        connect=5,
+        read=5,
+        backoff_factor=1.5,
+        status_forcelist=[500, 502, 503, 504],
+        allowed_methods=frozenset(["GET", "HEAD"]),
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+
     discogs = requests.Session()
     discogs.headers.update({"User-Agent": USER_AGENT, "Authorization": f"Discogs token={token}"})
+    discogs.mount("https://", adapter)
+    discogs.mount("http://", adapter)
 
     http = requests.Session()
     http.headers.update({"User-Agent": USER_AGENT})
+    http.mount("https://", adapter)
+    http.mount("http://", adapter)
 
     conn = sqlite3.connect(DB_PATH)
     init_db(conn)
@@ -375,7 +334,7 @@ def main():
             original_year = year
         if original_year and year and original_year < year and not reissue:
             reissue = "Reissue"
-        cover_path, cover_source = fetch_cover(http, artist, album, release_id, year, overrides)
+        cover_path, cover_source = fetch_cover(http, release_id, details["images"], overrides)
         if cover_source and cover_source != "cached":
             print(f"     cover: {cover_source}")
 
