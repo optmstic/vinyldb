@@ -29,7 +29,7 @@ python scrape_collection.py --refresh-covers
 1. Create a public repo called `vinyldb` on GitHub.
 2. Push this project:
    ```bash
-   git remote add origin https://github.com/<you>/vinyldb.git
+   git remote add origin https://github.com/optmstic/vinyldb.git
    git push -u origin main
    ```
 3. Add repo secrets (Settings → Secrets and variables → Actions):
@@ -38,7 +38,7 @@ python scrape_collection.py --refresh-covers
 4. Enable Pages (Settings → Pages): Source **Deploy from a branch**, branch `main`, folder `/docs`.
 5. Run the workflow once from the Actions tab to verify.
 
-Site URL: `https://<you>.github.io/vinyldb/`.
+Site URL: `https://optmstic.github.io/vinyldb/`.
 
 ## Data
 
