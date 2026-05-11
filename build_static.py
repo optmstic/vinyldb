@@ -28,7 +28,9 @@ def load_releases():
         SELECT release_id, artist, album, genre, style, year, original_year, reissue,
                edition, color, country, date_added, cover_path
         FROM releases
-        ORDER BY artist COLLATE NOCASE, year
+        ORDER BY artist COLLATE NOCASE,
+                 COALESCE(original_year, year),
+                 album COLLATE NOCASE
         """
     ).fetchall()
     conn.close()

@@ -133,7 +133,7 @@
   <select id="sort">
     <option value="artist">Sort: Artist</option>
     <option value="album">Sort: Album</option>
-    <option value="year">Sort: Year</option>
+    <option value="original_year">Sort: Original year</option>
     <option value="date_added">Sort: Date added</option>
   </select>
   <button id="dir" title="Toggle direction">▲</button>
@@ -193,14 +193,25 @@
     return `${Number(r.rating_avg).toFixed(2)} (${r.rating_count})`;
   }
 
+  function compareValue(a, b, key, dir = 1) {
+    let av = a[key], bv = b[key];
+    if (key === "original_year") {
+      av = a.original_year ?? a.year;
+      bv = b.original_year ?? b.year;
+    }
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
+    return String(av).localeCompare(String(bv), undefined, { sensitivity: "base" }) * dir;
+  }
+
   function filtered() {
     const out = RELEASES.slice();
     out.sort((a, b) => {
-      const av = a[sortKey], bv = b[sortKey];
-      if (av == null) return 1;
-      if (bv == null) return -1;
-      if (typeof av === "number" && typeof bv === "number") return (av - bv) * sortDir;
-      return String(av).localeCompare(String(bv), undefined, { sensitivity: "base" }) * sortDir;
+      const primary = compareValue(a, b, sortKey, sortDir);
+      if (primary) return primary;
+      if (sortKey === "artist") return compareValue(a, b, "original_year", sortDir) || compareValue(a, b, "album", sortDir);
+      return compareValue(a, b, "artist") || compareValue(a, b, "original_year") || compareValue(a, b, "album");
     });
     return out;
   }
