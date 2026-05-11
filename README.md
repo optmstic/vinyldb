@@ -1,59 +1,130 @@
-# VinylDb
+# vinyldb
 
-A scraped, browsable snapshot of a Discogs vinyl collection.
+Personal project for browsing and publishing a Discogs vinyl collection.
 
-- `scrape_collection.py` — pulls the collection, detects original release year (via master release), reissue/repress status, limited/numbered editions, and coloured vinyl variants; fetches cover art from Deezer, falling back to the Discogs release's own primary image when Deezer has no match (with per-release override via `covers_override.json`).
-- `app.py` — Flask viewer for local use.
-- `build_static.py` — generates the `docs/` directory published to GitHub Pages.
-- `.github/workflows/scrape.yml` — daily rescrape and commit at 20:00 UTC.
+`vinyldb` creates a local database and static website from a Discogs collection, enriches each release with metadata, downloads cover art, and publishes a browsable collection through GitHub Pages.
 
-## Local use
+---
+
+## What it does
+
+- Scrapes a Discogs collection using the Discogs API
+- Stores the collection in SQLite and CSV formats
+- Detects original release year, reissue/repress status, editions, and coloured vinyl variants
+- Fetches cover art from Deezer, with Discogs image fallback
+- Supports manual cover overrides through `covers_override.json`
+- Provides a local Flask viewer
+- Generates a static `docs/` site for GitHub Pages
+- Includes a GitHub Actions workflow for scheduled collection refreshes
+
+---
+
+## Repository structure
+
+```text
+.
+├── app.py                  # Local Flask viewer
+├── build_static.py          # Static site generator
+├── scrape_collection.py     # Discogs scraper and metadata enrichment
+├── collection.csv           # Exported collection data
+├── collection.db            # SQLite database
+├── covers/                  # Downloaded cover images
+├── covers_override.json     # Manual cover override rules
+├── requirements.txt         # Python dependencies
+└── README.md
+```
+
+---
+
+## Local setup
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
-# .env:
-#   DISCOGS_TOKEN=...
-#   DISCOGS_USERNAME=...
-python scrape_collection.py     # pulls data + covers
-python app.py                   # http://127.0.0.1:5000
 ```
 
-Force re-fetch of every cover after changing sources or logic:
+Create a `.env` file with your Discogs credentials:
+
+```env
+DISCOGS_TOKEN=your_token_here
+DISCOGS_USERNAME=your_username_here
+```
+
+Scrape the collection and run the local viewer:
+
+```bash
+python scrape_collection.py
+python app.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+## Refreshing covers
+
+Force a full cover re-fetch after changing sources or override logic:
 
 ```bash
 python scrape_collection.py --refresh-covers
 ```
 
-## Publishing to GitHub Pages
+---
 
-1. Create a public repo called `vinyldb` on GitHub.
-2. Push this project:
-   ```bash
-   git remote add origin https://github.com/optmstic/vinyldb.git
-   git push -u origin main
-   ```
-3. Add repo secrets (Settings → Secrets and variables → Actions):
-   - `DISCOGS_TOKEN`
-   - `DISCOGS_USERNAME`
-4. Enable Pages (Settings → Pages): Source **Deploy from a branch**, branch `main`, folder `/docs`.
-5. Run the workflow once from the Actions tab to verify.
+## Fixing incorrect covers
 
-Site URL: `https://optmstic.github.io/vinyldb/`.
+Add an entry to `covers_override.json` using the Discogs release ID as the key.
 
-## Data
-
-SQLite `releases` columns:
-`release_id, artist, album, genre, style, year, original_year, reissue, edition, color, country, date_added, cover_path, cover_source`.
-
-## Fixing a wrong cover
-
-Add an entry to `covers_override.json` mapping the Discogs release ID (as a string) to either a direct image URL or the literal string `"discogs"` to force that release's own Discogs primary image:
+Use either a direct image URL:
 
 ```json
 {
-  "32416002": "https://example.com/correct-cover.jpg",
+  "32416002": "https://example.com/correct-cover.jpg"
+}
+```
+
+Or force the Discogs primary image:
+
+```json
+{
   "31128872": "discogs"
 }
 ```
 
-Overrides are refreshed on every scrape and win over the automatic Deezer→Discogs chain.
+Overrides are applied on every scrape and take priority over the automatic Deezer → Discogs fallback chain.
+
+---
+
+## Publishing with GitHub Pages
+
+1. Generate the static site:
+
+   ```bash
+   python build_static.py
+   ```
+
+2. Enable GitHub Pages for the repository:
+   - Source: deploy from branch
+   - Branch: `main`
+   - Folder: `/docs`
+
+3. Add repository secrets for automated scraping:
+   - `DISCOGS_TOKEN`
+   - `DISCOGS_USERNAME`
+
+Published site:
+
+```text
+https://optmstic.github.io/vinyldb/
+```
+
+---
+
+## Technologies
+
+`Python` · `Flask` · `SQLite` · `Discogs API` · `GitHub Pages` · `GitHub Actions`
