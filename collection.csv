@@ -8,6 +8,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 29086195,Balthazar,Applause,"Rock, Pop",,2023,2010,Repress,,White Vinyl,Belgium,2026-02-27T11:04:37-08:00,covers/29086195.jpg,cached
 27275673,Baxter Dury,I Thought I Was Better Than You,"Rock, Pop",Alternative Rock,2023,2023,,,,Europe,2026-04-13T13:45:12-07:00,covers/27275673.jpg,cached
 26166029,Billy Howerdel,What Normal Was,"Electronic, Rock","Alternative Rock, Synthwave, Industrial",2023,2022,Reissue,,,USA & Europe,2025-05-15T04:59:36-07:00,covers/26166029.jpg,cached
+35439493,Bob Moses,Blink,Electronic,Deep House,2025,2025,,,Red And Black Marble Translucent,Worldwide,2026-05-21T14:49:21-07:00,covers/35439493.jpg,deezer
 2948457,Chilly Gonzales,The Unspeakable Chilly Gonzales,"Electronic, Hip Hop, Jazz",Jazzy Hip-Hop,2011,2011,,Limited,,France,2025-12-16T10:10:03-08:00,covers/2948457.jpg,cached
 9257171,Chilly Gonzales,Ivory Tower,"Electronic, Hip Hop, Jazz",Jazzy Hip-Hop,2010,2010,,,,France,2025-11-19T10:19:08-08:00,covers/9257171.jpg,cached
 3114872,dEUS,Keep You Close,Rock,Alternative Rock,2011,2011,,,,Europe,2026-04-18T05:56:39-07:00,covers/3114872.jpg,cached
@@ -30,6 +31,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 5811297,Gus Gus,Mexico,Electronic,"Progressive House, House, Tech House",2014,2014,,,,Germany,2026-04-10T07:24:44-07:00,covers/5811297.jpg,cached
 19451155,Gus Gus,Mobile Home,Electronic,"House, Electro",2021,2021,,,,Europe,2025-03-10T14:51:19-07:00,covers/19451155.jpg,cached
 18469045,Gusgus,Arabian Horse,Electronic,"Progressive House, House, Tech House",2021,2011,Repress,,,Europe,2026-04-18T10:34:58-07:00,covers/18469045.jpg,cached
+8265130,Iggy Pop,Post Pop Depression,Rock,Garage Rock,2016,2016,,"Deluxe, Limited",,Europe,2026-05-22T14:07:22-07:00,covers/8265130.jpg,discogs
 31708403,IST IST,Architecture,Rock,Post-Punk,2024,2020,Repress,,Blue Translucent,UK,2025-06-16T17:55:35-07:00,covers/31708403.jpg,cached
 30696994,J. Bernardt,Contigo,"Electronic, Rock, Pop","Indie Pop, Indie Rock",2024,2024,,,,Europe,2025-09-15T10:19:28-07:00,covers/30696994.jpg,cached
 11048496,John Maus,Screen Memories,"Electronic, Rock, Pop","Synth-pop, New Wave, Hypnagogic pop",2017,2017,,,,USA & Europe,2025-12-16T11:44:46-08:00,covers/11048496.jpg,cached
@@ -45,7 +47,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 23143076,Moderat,More D4ta,Electronic,"Electro, IDM, Bass Music",2022,2022,,,,Germany,2025-02-10T15:24:22-08:00,covers/23143076.jpg,cached
 368952,Mogwai,Happy Songs For Happy People,Rock,Post Rock,2003,2003,,,,UK,2026-04-14T12:13:32-07:00,covers/368952.jpg,cached
 20312302,Noel Gallagher's High Flying Birds,Chasing Yesterday,"Rock, Pop","Alternative Rock, Indie Rock",2015,2015,,,,Europe,2026-05-18T10:24:50-07:00,covers/20312302.jpg,cached
-33892191,Oi Va Voi,The Water's Edge,"Electronic, Rock",Future Jazz,2025,2025,,Limited,Dark Green,Worldwide,2026-05-21T08:42:46-07:00,covers/33892191.jpg,cached
+33892191,Oi Va Voi,The Water's Edge,"Electronic, Rock",Future Jazz,2025,2025,,Limited,Dark Green,Worldwide,2026-05-21T14:48:27-07:00,covers/33892191.jpg,cached
 32453373,Opeth,The Last Will And Testament,Rock,"Progressive Metal, Death Metal, Prog Rock",2024,2024,,,Silver Opaque,Europe,2025-03-10T14:50:56-07:00,covers/32453373.jpg,cached
 35355616,Other Lives,Volume V,Rock,"Alternative Rock, Folk Rock",2025,2025,,,,Europe,2026-04-02T11:11:58-07:00,covers/35355616.jpg,cached
 35338078,Perturbator,Age Of Aquarius,Electronic,Synthwave,2025,2025,,Limited,Blue [Transparent],Europe,2026-04-22T07:23:11-07:00,covers/35338078.jpg,cached
@@ -77,10 +79,11 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 1090090,Trentemøller,The Trentemøller Chronicles,Electronic,"Dub, Techno, Electro, Minimal, Tech House",2007,2007,,,,Germany,2026-01-21T16:11:40-08:00,covers/1090090.jpg,cached
 2306276,Trentemøller,Into The Great Wide Yonder,"Electronic, Rock","Techno, Experimental, Ambient",2010,2010,,,,Europe,2026-01-21T16:06:35-08:00,covers/2306276.jpg,cached
 14186387,Trentemøller,Obverse,"Electronic, Rock","Dark Ambient, Ambient, Electro, Experimental, IDM, Synthwave, Trip Hop, Shoegaze",2019,2019,,,White,Europe,2025-12-18T10:14:59-08:00,covers/14186387.jpg,cached
-31611160,Tycho,Infinite Health,Electronic,Downtempo,2024,2024,,Limited,Sky Blue,UK & Europe,2026-05-21T09:04:22-07:00,covers/31611160.jpg,discogs
+31611160,Tycho,Infinite Health,Electronic,Downtempo,2024,2024,,Limited,Sky Blue,UK & Europe,2026-05-21T14:47:47-07:00,covers/31611160.jpg,cached
 15780708,Ulver,Flowers Of Evil,Pop,,2020,2020,,Limited,Yellow,UK,2025-04-01T09:04:09-07:00,covers/15780708.jpg,cached
 33833697,Ulver,The Assassination Of Julius Caesar,"Electronic, Rock","Experimental, Avantgarde, Synthwave",2025,2017,Repress,Limited,,UK,2026-04-08T09:27:31-07:00,covers/33833697.jpg,cached
 1141347,UNKLE,War Stories,Electronic,"Breaks, Trip Hop, Experimental",2007,2007,,,,UK,2026-04-13T14:53:37-07:00,covers/1141347.jpg,cached
+8986753,Warhaus,We Fucked A Flame Into Being,Rock,Indie Rock,2016,2016,,,,UK & Europe,2026-05-21T14:47:13-07:00,covers/8986753.jpg,deezer
 25126651,Warhaus,Ha Ha Heartbreak,"Rock, Pop","Alternative Rock, Indie Rock, Indie Pop",2022,2022,,,,Belgium,2026-04-22T07:22:34-07:00,covers/25126651.jpg,cached
 32416002,Warhaus,Karaoke Moon,"Rock, Pop","Alternative Rock, Indie Rock, Indie Pop",2024,2024,,,,Belgium,2026-01-12T04:53:35-08:00,covers/32416002.jpg,cached
 13391603,Whispering Sons,Image,Rock,"Post-Punk, New Wave",2019,2018,Repress,,,Belgium,2026-03-25T07:05:23-07:00,covers/13391603.jpg,cached
