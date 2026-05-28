@@ -1,5 +1,6 @@
 release_id,artist,album,genre,style,year,original_year,reissue,edition,color,country,date_added,cover_path,cover_source
 14078850,!!!,Wallop,"Electronic, Rock","Indie Rock, Disco",2019,2019,,,,UK,2025-08-01T14:00:38-07:00,covers/14078850.jpg,cached
+17161207,!!!,Louden Up Now,"Electronic, Rock","Leftfield, Punk, Disco",2021,2004,Reissue,,,"UK, Europe & US",2026-05-27T16:18:57-07:00,covers/17161207.jpg,deezer
 12458218,Anna Calvi,Hunter,Rock,"Alternative Rock, Indie Rock",2018,2018,,,,Europe,2026-04-13T14:51:45-07:00,covers/12458218.jpg,cached
 13391581,Apparat,LP5,Electronic,"Ambient, Downtempo, Electro, Neo-Classical",2019,2019,,,,Europe,2026-03-03T13:07:42-08:00,covers/13391581.jpg,cached
 36558430,Apparat,A Hum Of Maybe,Electronic,"Ambient, Experimental",2026,2026,,Limited,Turquoise,Europe,2026-04-25T17:27:24-07:00,covers/36558430.jpg,cached
@@ -55,7 +56,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 20446003,Pond,9,Rock,Psychedelic Rock,2021,2021,,,,,2026-01-21T16:15:33-08:00,covers/20446003.jpg,cached
 27236106,Protomartyr,Formal Growth In The Desert,Rock,Post-Punk,2023,2023,,,,Worldwide,2025-12-18T10:17:21-08:00,covers/27236106.jpg,cached
 20338117,Public Service Broadcasting,Bright Magic,"Electronic, Rock","Indie Rock, Post Rock",2021,2021,,Limited,Orange/Black [Marbled],Europe,2026-04-24T20:09:16-07:00,covers/20338117.jpg,cached
-8036315,Puscifer,Money Shot,Rock,"Alternative Rock, Industrial, Experimental",2016,2015,Reissue,,,US,2026-05-27T08:09:52-07:00,covers/8036315.jpg,deezer
+8036315,Puscifer,Money Shot,Rock,"Alternative Rock, Industrial, Experimental",2016,2015,Reissue,,,US,2026-05-27T08:09:52-07:00,covers/8036315.jpg,cached
 11164074,Royal Blood,Royal Blood,Rock,Alternative Rock,2014,2014,,,,UK & Europe,2026-01-12T12:41:09-08:00,covers/11164074.jpg,cached
 6445002,Röyksopp,The Inevitable End,"Electronic, Pop","Synth-pop, Techno, Downtempo",2014,2014,,,,US,2025-11-29T13:35:20-08:00,covers/6445002.jpg,cached
 20265628,Röyksopp,Lost Tapes,Electronic,Downtempo,2021,2021,,"Limited, Numbered",,Europe,2025-08-27T11:25:32-07:00,covers/20265628.jpg,cached
@@ -70,7 +71,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 33688884,Sofa Surfers,Sofa Surfers,"Electronic, Rock, Funk / Soul","Dub, Downtempo, Art Rock, Neo Soul",2025,2005,Reissue,Limited,Red,Austria,2026-04-21T12:46:46-07:00,covers/33688884.jpg,cached
 30222686,Soulsavers,20,"Electronic, Rock","Downtempo, Alternative Rock",2024,2003,Reissue,Limited,Red,UK,2025-10-25T04:50:53-07:00,covers/30222686.jpg,cached
 28445203,Steven Wilson,The Harmony Codex,"Electronic, Rock, Pop","Prog Rock, Art Rock",2023,2023,,,,Worldwide,2025-08-19T11:07:32-07:00,covers/28445203.jpg,cached
-441237,Talk Talk,The Colour Of Spring,"Electronic, Rock",New Wave,1986,1986,,,,Europe,2026-05-27T06:40:56-07:00,covers/441237.jpg,deezer
+441237,Talk Talk,The Colour Of Spring,"Electronic, Rock",New Wave,1986,1986,,,,Europe,2026-05-27T06:40:56-07:00,covers/441237.jpg,cached
 7049793,TaxiWars,TaxiWars,Jazz,"Cool Jazz, Post Bop",2015,2015,,,,Belgium,2026-05-08T14:32:35-07:00,covers/7049793.jpg,discogs-forced
 10885248,The Horrors,V,Rock,Alternative Rock,2017,2017,,,,UK & Europe,2026-04-20T10:28:01-07:00,covers/10885248.jpg,cached
 28717558,The Kills,God Games,Rock,Indie Rock,2023,2023,,,,Worldwide,2026-01-21T16:05:19-08:00,covers/28717558.jpg,cached
