@@ -3,7 +3,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 14078850,!!!,Wallop,"Electronic, Rock","Indie Rock, Disco",2019,2019,,,,UK,2025-08-01T14:00:38-07:00,covers/14078850.jpg,cached
 17161207,!!!,Louden Up Now,"Electronic, Rock","Leftfield, Punk, Disco",2021,2004,Reissue,,,"UK, Europe & US",2026-05-27T16:18:57-07:00,covers/17161207.jpg,cached
 23100191,!!!,Let It Be Blue,"Electronic, Rock","Indie Rock, Disco",2022,2022,,,Blue,Europe,2026-06-15T08:29:21-07:00,covers/23100191.jpg,cached
-15853311,All Them Witches,Nothing As The Ideal ,Rock,"Hard Rock, Stoner Rock, Psychedelic Rock",2020,2020,,,,USA & Europe,2026-06-17T14:40:08-07:00,covers/15853311.jpg,deezer
+15853311,All Them Witches,Nothing As The Ideal ,Rock,"Hard Rock, Stoner Rock, Psychedelic Rock",2020,2020,,,,USA & Europe,2026-06-17T14:40:08-07:00,covers/15853311.jpg,cached
 12458218,Anna Calvi,Hunter,Rock,"Alternative Rock, Indie Rock",2018,2018,,,,Europe,2026-04-13T14:51:45-07:00,covers/12458218.jpg,cached
 13391581,Apparat,LP5,Electronic,"Ambient, Downtempo, Electro, Neo-Classical",2019,2019,,,,Europe,2026-03-03T13:07:42-08:00,covers/13391581.jpg,cached
 36558430,Apparat,A Hum Of Maybe,Electronic,"Ambient, Experimental",2026,2026,,Limited,Turquoise,Europe,2026-04-25T17:27:24-07:00,covers/36558430.jpg,cached
@@ -34,6 +34,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 22461616,Ghost,Impera,Rock,"Heavy Metal, Psychedelic Rock, Hard Rock, Doom Metal",2022,2022,,,,Europe,2026-06-02T08:53:28-07:00,covers/22461616.jpg,cached
 33793572,Ghost,Skeletá,Rock,"Heavy Metal, Hard Rock",2025,2025,,,,Europe,2025-07-27T14:44:10-07:00,covers/33793572.jpg,cached
 35405842,Ghost,Meliora (10th Anniversary Edition),Rock,"Hard Rock, Heavy Metal",2025,2015,Reissue,"Deluxe, Limited",Neon Green,USA & Europe,2026-04-21T12:49:06-07:00,covers/35405842.jpg,cached
+4529587,Ghost B.C.,Infestissumam,Rock,"Hard Rock, Heavy Metal",2013,2013,,,Red Translucent,Europe,2026-06-17T15:48:36-07:00,covers/4529587.jpg,deezer
 10720513,Ghostpoet,Dark Days + Canapés,"Electronic, Hip Hop, Rock, Non-Music","Abstract, Indie Rock, Trip Hop, Spoken Word",2017,2017,,Limited,White,UK,2026-01-21T16:14:45-08:00,covers/10720513.jpg,cached
 21369217,Ghostpoet,Shedding Skin,"Electronic, Hip Hop","Trip Hop, Abstract",2021,2015,Reissue,Limited,Purple,Europe,2026-02-27T11:08:08-08:00,covers/21369217.jpg,cached
 11945675,Godspeed You Black Emperor!,F♯ A♯ ∞,Rock,Post Rock,2018,1997,Reissue,,,Canada,2026-03-18T16:00:10-07:00,covers/11945675.jpg,cached
@@ -103,7 +104,7 @@ release_id,artist,album,genre,style,year,original_year,reissue,edition,color,cou
 28445203,Steven Wilson,The Harmony Codex,"Electronic, Rock, Pop","Prog Rock, Art Rock",2023,2023,,,,Worldwide,2025-08-19T11:07:32-07:00,covers/28445203.jpg,cached
 441237,Talk Talk,The Colour Of Spring,"Electronic, Rock",New Wave,1986,1986,,,,Europe,2026-05-27T06:40:56-07:00,covers/441237.jpg,cached
 7049793,TaxiWars,TaxiWars,Jazz,"Cool Jazz, Post Bop",2015,2015,,,,Belgium,2026-05-08T14:32:35-07:00,covers/7049793.jpg,discogs-forced
-30437018,The Cult,Under The Midnight Sun,Rock,Alternative Rock,2022,2022,,,,Europe,2026-06-17T14:36:16-07:00,covers/30437018.jpg,deezer
+30437018,The Cult,Under The Midnight Sun,Rock,Alternative Rock,2022,2022,,,,Europe,2026-06-17T14:36:16-07:00,covers/30437018.jpg,cached
 10885248,The Horrors,V,Rock,Alternative Rock,2017,2017,,,,UK & Europe,2026-04-20T10:28:01-07:00,covers/10885248.jpg,cached
 33482921,The Horrors,Night Life,Rock,"Garage Rock, Post-Punk, Alternative Rock",2025,2025,,,,Europe,2026-06-15T08:29:39-07:00,covers/33482921.jpg,cached
 28717558,The Kills,God Games,Rock,Indie Rock,2023,2023,,,,Worldwide,2026-01-21T16:05:19-08:00,covers/28717558.jpg,cached
